@@ -13,6 +13,8 @@ class Game : ApplicationAdapter() {
     internal lateinit var batch: SpriteBatch
     internal lateinit var img: Texture
     internal lateinit var nemo: Nemo
+    internal var leftPressed : Boolean = false;
+    internal var rightPressed : Boolean = false;
 
     override fun create() {
         batch = SpriteBatch()
@@ -24,9 +26,16 @@ class Game : ApplicationAdapter() {
     override fun render() {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        updateCharacter()
         batch.begin()
         batch.draw(img, nemo.position.x, nemo.position.y)
         batch.end()
+    }
+
+    private fun updateCharacter() {
+        if (leftPressed && nemo.position.x >= 10) nemo.position.x -= 10
+        if (rightPressed && nemo.position.x < 610) nemo.position.x += 10
+
     }
 
     data class Nemo(val position: Vector2 = Vector2(0f, 0f))
@@ -35,24 +44,20 @@ class Game : ApplicationAdapter() {
 
         override fun keyDown(keycode: Int): Boolean {
             when (keycode) {
-                Input.Keys.LEFT -> moveCharacter(Direction.LEFT)
-                Input.Keys.RIGHT -> moveCharacter(Direction.RIGHT)
+                Input.Keys.LEFT -> leftPressed = true
+                Input.Keys.RIGHT -> rightPressed = true
+                else -> return false
+            }
+            return true
+        }
+
+        override fun keyUp(keycode: Int): Boolean {
+            when (keycode) {
+                Input.Keys.LEFT -> leftPressed = false
+                Input.Keys.RIGHT -> rightPressed = false
                 else -> return false
             }
             return true
         }
     }
-
-    fun moveCharacter(direction: Direction) {
-        if (direction.equals(Direction.LEFT) && nemo.position.x >= 10) {
-            nemo.position.x -= 10
-        }
-        if (direction.equals(Direction.RIGHT) && nemo.position.x <= 300) {
-            nemo.position.x += 10
-        }
-    }
-}
-
-enum class Direction {
-    LEFT, RIGHT
 }
