@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 
@@ -96,18 +97,6 @@ class Game : ApplicationAdapter() {
             else if (nemo.position.x < 610) {
                 nemo.position.x += nemo.speed * delta
             }
-        }
-    }
-
-    data class Nemo(
-            val position: Vector2 = Vector2(0f, 0f),
-            var state: State = State.IDLE,
-            var facingLeft: Boolean = true,
-            var speed: Float = 160f,
-            var stateTime: Float = 0f) {
-
-        enum class State {
-            IDLE, RUNNING
         }
     }
 
